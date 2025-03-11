@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Nota;
 
 class NotaController extends Controller
 {
@@ -11,7 +12,7 @@ class NotaController extends Controller
      */
     public function index()
     {
-        //
+        return Nota::with(['estudiante', 'asignatura'])->get();
     }
 
     /**
@@ -19,7 +20,14 @@ class NotaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'estudiante_id' => 'required|exists:estudiantes,id',
+            'asignatura_id' => 'required|exists:asignaturas,id',
+            'nota' => 'nullable|numeric|min:0|max:10'
+        ]);
+
+        $nota = Nota::create($request->all());
+        return response()->json($nota, 201);
     }
 
     /**
@@ -27,7 +35,8 @@ class NotaController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $nota = Nota::with(['estudiante', 'asignatura'])->findOrFail($id);
+        return response()->json($nota);
     }
 
     /**
@@ -35,7 +44,16 @@ class NotaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $nota = Nota::findOrFail($id);
+
+        $request->validate([
+            'estudiante_id' => 'sometimes|exists:estudiantes,id',
+            'asignatura_id' => 'sometimes|exists:asignaturas,id',
+            'nota' => 'nullable|numeric|min:0|max:10'
+        ]);
+
+        $nota->update($request->all());
+        return response()->json($nota);
     }
 
     /**
@@ -43,6 +61,7 @@ class NotaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Nota::destroy($id);
+        return response()->json(null, 204);
     }
 }

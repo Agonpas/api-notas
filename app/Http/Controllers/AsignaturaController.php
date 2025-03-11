@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Asignatura;
 
 class AsignaturaController extends Controller
 {
@@ -11,7 +12,7 @@ class AsignaturaController extends Controller
      */
     public function index()
     {
-        //
+        return Asignatura::all();
     }
 
     /**
@@ -19,7 +20,13 @@ class AsignaturaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'curso' => 'required|in:1o,2o,3o,4o'
+        ]);
+
+        $asignatura = Asignatura::create($request->all());
+        return response()->json($asignatura, 201);
     }
 
     /**
@@ -27,7 +34,8 @@ class AsignaturaController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $asignatura = Asignatura::findOrFail($id);
+        return response()->json($asignatura);
     }
 
     /**
@@ -35,7 +43,15 @@ class AsignaturaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $asignatura = Asignatura::findOrFail($id);
+
+        $request->validate([
+            'nombre' => 'sometimes|string|max:255',
+            'curso' => 'sometimes|in:1o,2o,3o,4o'
+        ]);
+
+        $asignatura->update($request->all());
+        return response()->json($asignatura);
     }
 
     /**
@@ -43,6 +59,7 @@ class AsignaturaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Asignatura::destroy($id);
+        return response()->json(null, 204);
     }
 }
