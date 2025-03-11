@@ -64,4 +64,24 @@ class NotaController extends Controller
         Nota::destroy($id);
         return response()->json(null, 204);
     }
+    /* método para obtener la media de todas las notas */
+    
+    public function obtenerMediaGlobal()
+    {
+       
+        // Obtener todas las notas
+    $notas = Nota::all();
+
+    // Verificar si hay notas
+    if ($notas->isEmpty()) {
+        return response()->json(['message' => 'No hay notas disponibles para calcular la media.'], 404);
+    }
+
+    // Calcular la media de las notas
+    $media = $notas->avg('nota');
+
+    return response()->json([
+        'media_global' => $media
+    ]);
+    }
 }
