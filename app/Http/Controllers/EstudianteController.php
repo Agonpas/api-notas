@@ -45,7 +45,7 @@ class EstudianteController extends Controller
     public function update(Request $request, string $id)
     {   
         $estudiante = Estudiante::findOrFail($id);
-        
+
         $request->validate([
             'nombre' => 'sometimes|string|max:255',
             'apellidos' => 'sometimes|string|max:255',
@@ -64,5 +64,19 @@ class EstudianteController extends Controller
     {
         Estudiante::destroy($id);
         return response()->json(null, 204);
+    }
+
+    /* método para obtener las notas medias de un estudiante */
+    public function obtenerMediaNotas(string $id)
+    {
+        $estudiante = Estudiante::findOrFail($id);
+
+        $notas = $estudiante->notas;
+        $media = $notas->avg('nota');
+
+        return response()->json([
+            'estudiante' => $estudiante -> nombre . ' ' . $estudiante -> apellidos,
+            'media' => $media
+        ]);
     }
 }
