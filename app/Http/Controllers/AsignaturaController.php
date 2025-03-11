@@ -62,4 +62,17 @@ class AsignaturaController extends Controller
         Asignatura::destroy($id);
         return response()->json(null, 204);
     }
+    /* método para obtener las notas medias de una asignatura */
+    public function obtenerMediaNotasPorAsignatura(string $id)
+    {
+        $asignatura = Asignatura::findOrFail($id);
+
+        $notas = $asignatura->notas;
+        $media = $notas->avg('nota');
+
+        return response()->json([
+            'asignatura' => $asignatura -> nombre . ' ' . $asignatura -> curso,
+            'media' => $media
+        ]);
+    }
 }

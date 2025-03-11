@@ -15,5 +15,7 @@ Route::apiResource('estudiantes', EstudianteController::class);
 Route::apiResource('asignaturas', AsignaturaController::class);
 Route::apiResource('notas', NotaController::class);
 
-//rutas para obtener las notas medias de un estudiante
+//ruta para obtener las notas medias de un estudiante
 Route::get('/estudiantes/{id}/media', [EstudianteController::class, 'obtenerMediaNotas']);
+//ruta para obtener las notas medias de una asignatura
+Route::get('/asignaturas/{id}/media', [AsignaturaController::class, 'obtenerMediaNotasPorAsignatura']);
