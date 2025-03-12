@@ -23,3 +23,5 @@ Route::get('/asignaturas/{id}/media', [AsignaturaController::class, 'obtenerMedi
 Route::get('/media', [NotaController::class, 'obtenerMediaGlobal']);
 //ruta para obtener todas las notas de un estudiante
 Route::get('/estudiantes/{id}/notas', [\App\Http\Controllers\EstudianteController::class, 'obtenerNotas']);
+
+Route::get('/health', function () { return response()->json(['status' => 'ok']);});
