@@ -1,5 +1,5 @@
 # Usa una imagen base de PHP con Composer instalado
-FROM php:8.1-fpm
+FROM php:8.2-fpm
 
 # Establecer el directorio de trabajo en el contenedor
 WORKDIR /var/www
