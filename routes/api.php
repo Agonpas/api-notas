@@ -21,3 +21,5 @@ Route::get('/estudiantes/{id}/media', [EstudianteController::class, 'obtenerMedi
 Route::get('/asignaturas/{id}/media', [AsignaturaController::class, 'obtenerMediaNotasPorAsignatura']);
 //ruta para obtener la media de todas las notas
 Route::get('/media', [NotaController::class, 'obtenerMediaGlobal']);
+//ruta para obtener todas las notas de un estudiante
+Route::get('/estudiantes/{id}/notas', [\App\Http\Controllers\EstudianteController::class, 'obtenerNotas']);

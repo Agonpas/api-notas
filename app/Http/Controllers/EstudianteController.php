@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Estudiante;
+use App\Models\Nota;
 
 class EstudianteController extends Controller
 {
@@ -78,5 +79,23 @@ class EstudianteController extends Controller
             'estudiante' => $estudiante -> nombre . ' ' . $estudiante -> apellidos,
             'media' => $media
         ]);
+    }
+    public function obtenerNotas(string $id)
+    {
+        $estudiante = Estudiante::findOrFail($id);
+
+         $notas = Nota::where('estudiante_id', $id)
+                ->with('asignatura:id,nombre') 
+                ->get(['asignatura_id', 'nota']);
+
+        $resultado = $notas->map(function ($nota) {
+            return [
+                'asignatura' => $nota->asignatura->nombre,
+                'nota' => $nota->nota
+            ];
+        });
+            
+                return response()->json($resultado);
+            
     }
 }
